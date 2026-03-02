@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&family=Fira+Code:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #6c63ff;
+  --secondary: #ff6584;
+  --accent: #43e97b;
+  --warning: #ffb347;
+  --dark: #1a1a2e;
+  --surface: #16213e;
+  --surface-light: #0f3460;
+  --text-primary: #eaeaea;
+  --text-secondary: #a0aec0;
+  font-family: "Inter", system-ui, sans-serif;
+  color-scheme: dark;
+  background-color: var(--dark);
+  color: var(--text-primary);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--dark);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+code, pre {
+  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
