@@ -3,79 +3,112 @@ import { SUBJECTS } from '../data/subjects.js'
 
 export default function Landing() {
   return (
-    <div className="space-y-12">
-      <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-6">
-          <p className="inline-flex items-center gap-2 rounded-full bg-surfaceLight px-4 py-2 text-xs text-textSecondary">
-            Tutor AI personalizzato per il biennio ITIS
-          </p>
-          <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
-            Ogni documento diventa un tutor interattivo
+    <div className="space-y-20 py-10 animate-in fade-in duration-700">
+      <section className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center">
+        <div className="space-y-8">
+          <div className="inline-flex items-center gap-2 rounded-2xl bg-orange-500/10 border border-orange-500/20 px-4 py-2 text-xs font-bold uppercase tracking-widest text-orange-600">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+            </span>
+            Tutor AI personalizzato ITIS
+          </div>
+          <h1 className="text-5xl font-black leading-[1.1] md:text-7xl tracking-tight text-[#451a03]">
+            Studia in modo <span className="text-orange-600">intelligente</span>, con calma.
           </h1>
-          <p className="text-lg text-textSecondary">
-            EduMind trasforma i materiali didattici in percorsi di studio adattivi, con
-            chat intelligente, gamification e valutazioni mirate.
+          <p className="text-xl text-amber-900/70 leading-relaxed max-w-xl font-medium">
+            EduMind trasforma i tuoi materiali didattici in un'esperienza accogliente e interattiva. Chiedi, impara e cresci ogni giorno.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             <Link
               to="/dashboard"
-              className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white"
+              className="btn-primary flex items-center gap-2"
             >
-              Entra nella dashboard
+              Inizia Ora
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </Link>
             <Link
               to="/learning-style"
-              className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white"
+              className="px-8 py-3 rounded-2xl border border-orange-200 bg-white/50 font-bold text-orange-700 hover:bg-white transition-all shadow-sm"
             >
               Scopri il tuo stile
             </Link>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
             {[
-              { label: 'Micro-quiz', value: '15+ modelli' },
-              { label: 'Crediti XP', value: 'Gamification' },
-              { label: 'AI Claude', value: 'Risposte rapide' },
+              { label: 'Quiz interattivi', value: '15+ tipi' },
+              { label: 'Gamification', value: 'Badge & XP' },
+              { label: 'Risposte Istantanee', value: 'AI Claude' },
             ].map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-white/10 bg-surface/80 px-4 py-3"
+                className="glass-card p-4 rounded-3xl"
               >
-                <p className="text-sm text-textSecondary">{item.label}</p>
-                <p className="text-lg font-semibold">{item.value}</p>
+                <p className="text-xs font-bold text-amber-900/40 uppercase tracking-wider">{item.label}</p>
+                <p className="text-lg font-bold text-[#451a03] mt-1">{item.value}</p>
               </div>
             ))}
           </div>
         </div>
-        <div className="grid gap-4">
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-primary/20 via-surface to-surfaceLight p-6">
-            <p className="text-sm text-textSecondary">Stanza AI attiva</p>
-            <h2 className="mt-3 text-2xl font-semibold">Sessione di studio guidata</h2>
-            <p className="mt-3 text-sm text-textSecondary">
-              Seleziona un documento, fai domande e accumula crediti per ogni risposta di qualità.
-            </p>
-            <div className="mt-5 flex items-center gap-3">
-              <div className="rounded-full bg-accent/20 px-3 py-1 text-xs text-accent">
-                48 crediti oggi
+
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-tr from-orange-500/10 to-amber-500/10 blur-3xl rounded-full" />
+          <div className="relative glass-card p-8 rounded-[2.5rem] space-y-8 border-white">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="h-3 w-3 rounded-full bg-orange-200" />
+                <div className="h-3 w-3 rounded-full bg-orange-300" />
+                <div className="h-3 w-3 rounded-full bg-orange-400" />
               </div>
-              <div className="rounded-full bg-warning/20 px-3 py-1 text-xs text-warning">
-                Qualità 4.2
-              </div>
+              <div className="text-xs font-bold text-amber-900/30">SESSIONE_STUDIO_WARM</div>
             </div>
-          </div>
-          <div className="rounded-3xl border border-white/10 bg-surface/80 p-6">
-            <p className="text-sm text-textSecondary">Materie disponibili</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {SUBJECTS.slice(0, 6).map((subject) => (
-                <div
-                  key={subject.id}
-                  className="flex items-center gap-3 rounded-2xl bg-surfaceLight px-3 py-2"
-                >
-                  <span>{subject.icon}</span>
-                  <span className="text-sm">{subject.name}</span>
+            
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <div className="h-8 w-8 rounded-full bg-orange-500 flex-shrink-0" />
+                <div className="bg-orange-50 p-4 rounded-2xl rounded-tl-none text-sm text-amber-900 font-medium">
+                  Ciao! Ho preparato una sintesi calda dei tuoi appunti di Chimica. Iniziamo?
                 </div>
-              ))}
+              </div>
+              <div className="flex gap-3 justify-end">
+                <div className="bg-orange-600 p-4 rounded-2xl rounded-tr-none text-sm text-white font-bold">
+                  Sì! Aiutami a capire meglio le moli.
+                </div>
+                <div className="h-8 w-8 rounded-full bg-amber-200 flex-shrink-0" />
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-orange-100 flex items-center justify-between">
+               <div className="flex -space-x-2">
+                  {[1,2,3,4].map(i => (
+                    <div key={i} className="h-8 w-8 rounded-full border-2 border-white bg-orange-50 overflow-hidden">
+                       <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="user" />
+                    </div>
+                  ))}
+               </div>
+               <div className="text-sm font-bold text-orange-600">+124 Studenti online</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="space-y-8">
+        <div className="text-center space-y-3">
+           <h2 className="text-3xl font-black text-[#451a03]">Materie Supportate</h2>
+           <p className="text-amber-900/50 font-medium">Impara con i toni caldi dell'efficienza</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+          {SUBJECTS.map((subject) => (
+            <div
+              key={subject.id}
+              className="glass-card flex flex-col items-center justify-center gap-3 p-6 rounded-3xl group cursor-default"
+            >
+              <div className="h-16 w-16 flex items-center justify-center rounded-2xl text-3xl group-hover:scale-110 transition-transform shadow-md" style={{ backgroundColor: `${subject.color}15`, color: subject.color }}>
+                {subject.icon}
+              </div>
+              <span className="font-bold text-sm tracking-tight text-[#451a03]">{subject.name}</span>
+            </div>
+          ))}
         </div>
       </section>
     </div>

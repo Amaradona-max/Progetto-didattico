@@ -4,7 +4,7 @@ export default function LearningStyleBadge({ styleKey }) {
   const style = LEARNING_STYLES[styleKey]
   if (!style) {
     return (
-      <span className="rounded-full bg-surfaceLight px-4 py-2 text-xs text-textSecondary">
+      <span className="rounded-full bg-orange-50 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-amber-900/40 border border-orange-100">
         Stile non definito
       </span>
     )
@@ -12,10 +12,10 @@ export default function LearningStyleBadge({ styleKey }) {
 
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium"
-      style={{ backgroundColor: style.color, color: '#111827' }}
+      className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest shadow-sm"
+      style={{ backgroundColor: style.color, color: '#451a03' }}
     >
-      {style.icon}
+      <span className="text-base">{style.icon}</span>
       {style.label}
     </span>
   )

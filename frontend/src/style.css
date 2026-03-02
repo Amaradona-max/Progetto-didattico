@@ -1,39 +1,88 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&family=Fira+Code:wght@400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --primary: #6c63ff;
-  --secondary: #ff6584;
-  --accent: #43e97b;
-  --warning: #ffb347;
-  --dark: #1a1a2e;
-  --surface: #16213e;
-  --surface-light: #0f3460;
-  --text-primary: #eaeaea;
-  --text-secondary: #a0aec0;
-  font-family: "Inter", system-ui, sans-serif;
-  color-scheme: dark;
-  background-color: var(--dark);
-  color: var(--text-primary);
+  --primary: #ea580c; /* Arancio caldo / Terracotta */
+  --primary-dark: #c2410c;
+  --accent: #f59e0b; /* Ambra */
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-light: rgba(255, 255, 255, 0.9);
+  --bg-light: #fdfaf6; /* Crema caldo */
+  --text-main: #451a03; /* Marrone caffè profondo per massima leggibilità */
+  --text-muted: #78350f; /* Marrone ambrato per testi secondari */
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background-color: var(--dark);
+@layer base {
+  body {
+    @apply bg-[#fdfaf6] text-[#451a03] antialiased selection:bg-orange-200;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
 }
 
-#root {
-  min-height: 100vh;
+/* Sfondo scolastico caldo e luminoso */
+.edu-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #fdfaf6;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(234, 88, 12, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ea580c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 30V20h10V10H6V0H4v10H0v2h4v10H0v2h4v10H0v2h4v10h2V30h10V20H6v10zM30 0h-2v10h-10v2h10v10h2V12h10v-2H30V0zM10 60h10V50h10v10h2V48H20v10H10V48H8v12h2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
 }
 
-h1, h2, h3, h4 {
-  font-family: "Poppins", system-ui, sans-serif;
+/* Effetto Vetro Satinato (Light Mode) */
+.glass-card {
+  @apply backdrop-blur-xl bg-white/70 border border-white shadow-[0_8px_32px_rgba(120,53,15,0.08)];
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-code, pre {
-  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+.glass-card:hover {
+  @apply bg-white/90 border-orange-100 shadow-[0_12px_48px_rgba(120,53,15,0.12)] -translate-y-1;
+}
+
+/* Pulsanti "Warm Tech" */
+.btn-primary {
+  @apply relative overflow-hidden px-6 py-2.5 rounded-2xl bg-[#ea580c] font-bold text-white shadow-lg shadow-orange-700/20 transition-all hover:bg-[#c2410c] hover:shadow-orange-700/30 active:scale-95;
+}
+
+.btn-accent {
+  @apply relative overflow-hidden px-6 py-2.5 rounded-2xl bg-[#f59e0b] font-bold text-white shadow-lg shadow-amber-700/20 transition-all hover:bg-[#d97706] active:scale-95;
+}
+
+/* Scrollbar calda */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-orange-200/50 rounded-full hover:bg-orange-300/50;
+}
+
+/* Messaggi Chat */
+.chat-bubble-assistant {
+  @apply bg-white border border-orange-100 text-[#451a03] shadow-sm;
+}
+
+.chat-bubble-user {
+  @apply bg-[#ea580c] text-white shadow-md shadow-orange-700/20;
+}
+
+/* Utility per testi caldi */
+.text-warm-muted {
+  @apply text-[#78350f]/70;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
 }

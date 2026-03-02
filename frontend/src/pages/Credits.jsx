@@ -13,38 +13,50 @@ export default function Credits() {
   const { totalCredits, dailyStreak, lastQualityScore } = useCredits()
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-3xl border border-white/10 bg-surface/80 p-6">
-        <h1 className="text-3xl font-semibold">Crediti &amp; Badge</h1>
-        <p className="mt-2 text-textSecondary">
-          Guadagna crediti con domande di qualità e sblocca badge esclusivi.
+    <div className="space-y-12 animate-in fade-in duration-500">
+      <section className="glass-card p-10 rounded-[2.5rem] relative overflow-hidden">
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl" />
+        <h1 className="text-4xl font-black tracking-tight text-[#451a03]">Crediti & Achievement</h1>
+        <p className="mt-2 text-amber-900/60 text-lg font-medium">
+          Il tuo impegno viene premiato. Accumula XP e sblocca nuovi traguardi.
         </p>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <CreditBadge label="Crediti totali" value={totalCredits} />
-        <CreditBadge label="Streak giornaliero" value={`${dailyStreak} giorni`} />
-        <CreditBadge label="Qualità media" value={`${lastQualityScore} / 5`} />
+      <section className="grid gap-6 md:grid-cols-3">
+        <div className="glass-card p-8 rounded-3xl border-orange-100 flex flex-col items-center text-center">
+           <p className="text-[10px] font-black uppercase tracking-widest text-amber-900/40 mb-2">XP Totali</p>
+           <p className="text-4xl font-black text-orange-600">{totalCredits}</p>
+        </div>
+        <div className="glass-card p-8 rounded-3xl border-orange-100 flex flex-col items-center text-center">
+           <p className="text-[10px] font-black uppercase tracking-widest text-amber-900/40 mb-2">Striscia Attuale</p>
+           <p className="text-4xl font-black text-orange-600">{dailyStreak} <span className="text-xl">gg</span></p>
+        </div>
+        <div className="glass-card p-8 rounded-3xl border-orange-100 flex flex-col items-center text-center">
+           <p className="text-[10px] font-black uppercase tracking-widest text-amber-900/40 mb-2">Qualità Risposte</p>
+           <p className="text-4xl font-black text-orange-600">{lastQualityScore}<span className="text-xl">/5</span></p>
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Badge sbloccabili</h2>
-        <div className="grid gap-4 md:grid-cols-2">
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold tracking-tight px-2 text-[#451a03]">Badge da Sbloccare</h2>
+        <div className="grid gap-6 md:grid-cols-2">
           {badges.map((badge) => (
             <div
               key={badge.id}
-              className="flex items-center justify-between rounded-3xl border border-white/10 bg-surface/80 p-5"
+              className="glass-card flex items-center justify-between p-6 rounded-3xl group hover:border-orange-300 transition-all"
             >
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">{badge.icon}</span>
+              <div className="flex items-center gap-5">
+                <div className="h-16 w-16 rounded-2xl bg-orange-50 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
+                   {badge.icon}
+                </div>
                 <div>
-                  <p className="text-sm font-semibold">{badge.name}</p>
-                  <p className="text-xs text-textSecondary">Obiettivo: {badge.target}</p>
+                  <p className="text-lg font-bold text-[#451a03]">{badge.name}</p>
+                  <p className="text-xs font-bold text-amber-900/40 uppercase tracking-widest">Obiettivo: {badge.target} XP</p>
                 </div>
               </div>
-              <span className="rounded-full bg-surfaceLight px-3 py-1 text-xs text-textSecondary">
+              <div className="h-8 px-4 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[10px] font-black text-orange-600 uppercase tracking-widest">
                 In corso
-              </span>
+              </div>
             </div>
           ))}
         </div>

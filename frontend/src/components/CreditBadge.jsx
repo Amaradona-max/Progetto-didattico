@@ -1,8 +1,8 @@
 export default function CreditBadge({ label, value }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-surface/80 px-4 py-3">
-      <span className="text-sm text-textSecondary">{label}</span>
-      <span className="text-lg font-semibold text-accent">{value}</span>
+    <div className="flex items-center justify-between rounded-2xl border border-orange-100 bg-white/50 px-6 py-4 shadow-sm">
+      <span className="text-xs font-black uppercase tracking-widest text-amber-900/40">{label}</span>
+      <span className="text-xl font-black text-orange-600 tracking-tight">{value}</span>
     </div>
   )
 }
