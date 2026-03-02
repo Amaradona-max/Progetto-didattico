@@ -7,6 +7,7 @@ import StudySession from './pages/StudySession.jsx'
 import LearningStyle from './pages/LearningStyle.jsx'
 import Credits from './pages/Credits.jsx'
 import Verification from './pages/Verification.jsx'
+import Guida from './pages/Guida.jsx'
 
 const linkClass = ({ isActive }) =>
   `rounded-2xl px-5 py-2.5 text-sm font-bold transition-all duration-300 ${
@@ -37,6 +38,7 @@ export default function App() {
               <NavLink to="/" className={linkClass}>Home</NavLink>
               <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
               <NavLink to="/teacher" className={linkClass}>Docenti</NavLink>
+              <NavLink to="/guida" className={linkClass}>Guida</NavLink>
               <NavLink to="/credits" className={linkClass}>Crediti</NavLink>
             </nav>
             <div className="flex items-center gap-4">
@@ -58,6 +60,7 @@ export default function App() {
             <Route path="/learning-style" element={<LearningStyle />} />
             <Route path="/credits" element={<Credits />} />
             <Route path="/verification" element={<Verification />} />
+            <Route path="/guida" element={<Guida />} />
           </Routes>
         </main>
 
