@@ -1,36 +1,71 @@
 const express = require('express')
 const multer = require('multer')
 const { extractText, chunkText } = require('../services/documentParser')
+const { addDocuments, listDocuments, getContext } = require('../services/documentStore')
 
 const router = express.Router()
 const upload = multer()
 
-router.post('/upload', upload.single('document'), async (req, res) => {
-  const { subjectId, title, description } = req.body
-  const fileBuffer = req.file ? req.file.buffer : null
+router.post(
+  '/upload',
+  upload.fields([
+    { name: 'documents', maxCount: 20 },
+    { name: 'document', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    const { subjectId, title, description } = req.body
+    const files = [
+      ...((req.files && req.files.documents) || []),
+      ...((req.files && req.files.document) || []),
+    ]
 
-  if (!fileBuffer) {
-    return res.status(400).json({ error: 'Documento mancante' })
+    if (!subjectId) {
+      return res.status(400).json({ error: 'Materia mancante' })
+    }
+
+    if (!files.length) {
+      return res.status(400).json({ error: 'Documenti mancanti' })
+    }
+
+    const baseTimestamp = Date.now()
+    const documents = await Promise.all(
+      files.map(async (file, index) => {
+        const text = await extractText(file.buffer, file.mimetype)
+        const chunks = chunkText(text, 2000)
+        const computedTitle = title
+          ? `${title}${files.length > 1 ? ` (${index + 1})` : ''}`
+          : file.originalname
+        return {
+          id: `${baseTimestamp}-${index + 1}`,
+          subjectId,
+          title: computedTitle,
+          description,
+          chunks,
+          fileName: file.originalname,
+          createdAt: new Date().toISOString(),
+        }
+      })
+    )
+
+    addDocuments(documents)
+
+    res.json({
+      success: true,
+      documents,
+    })
   }
-
-  const text = await extractText(fileBuffer, req.file.mimetype)
-  const chunks = chunkText(text, 2000)
-
-  res.json({
-    success: true,
-    document: {
-      id: 'demo-doc',
-      subjectId,
-      title,
-      description,
-      chunks,
-      fileName: req.file.originalname,
-    },
-  })
-})
+)
 
 router.get('/', (req, res) => {
-  res.json({ documents: [] })
+  const { subjectId } = req.query
+  const documents = listDocuments({ subjectId })
+  res.json({ documents })
+})
+
+router.get('/context', (req, res) => {
+  const { subjectId, documentId } = req.query
+  const context = getContext({ subjectId, documentId })
+  res.json({ context })
 })
 
 module.exports = router
