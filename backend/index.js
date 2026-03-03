@@ -9,8 +9,9 @@ const studentRoutes = require('./routes/students')
 const creditRoutes = require('./routes/credits')
 
 const app = express()
-app.use(cors({ origin: 'https://progetto-didattico.vercel.app' }));
-app.use(express.json({ limit: '10mb' }))
+app.use(cors()); // Permette tutte le origini durante lo sviluppo per evitare problemi di fetch
+app.use(express.json({ limit: '50mb' })) // Aumentato il limite per gestire file più grandi
+app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' })

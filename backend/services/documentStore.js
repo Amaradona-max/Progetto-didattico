@@ -1,29 +1,58 @@
-const { put, get, del } = require('@vercel/blob');
+const fs = require('fs').promises;
+const path = require('path');
+const { put, list, del } = require('@vercel/blob');
 
-const BLOB_KEY = 'documents.json';
+const LOCAL_STORAGE_PATH = path.join(__dirname, '../data/documents.json');
+const BLOB_FILENAME = 'documents.json';
+
+const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
 
 const loadDocuments = async () => {
   try {
-    const blob = await get(BLOB_KEY);
-    if (!blob) return [];
-    const raw = await blob.text();
-    return JSON.parse(raw || '[]');
-  } catch (error) {
-    if (error.status === 404) {
-      console.log('Blob not found, creating a new one.');
-      await saveDocuments([]);
-      return [];
+    if (useBlob) {
+      const { blobs } = await list();
+      const documentBlob = blobs.find(b => b.pathname === BLOB_FILENAME);
+      if (!documentBlob) return [];
+      
+      const response = await fetch(documentBlob.url);
+      if (!response.ok) return [];
+      return await response.json();
+    } else {
+      try {
+        const data = await fs.readFile(LOCAL_STORAGE_PATH, 'utf-8');
+        return JSON.parse(data || '[]');
+      } catch (err) {
+        if (err.code === 'ENOENT') {
+          // Se il file non esiste, assicuriamoci che la cartella esista
+          const dir = path.dirname(LOCAL_STORAGE_PATH);
+          await fs.mkdir(dir, { recursive: true });
+          await fs.writeFile(LOCAL_STORAGE_PATH, '[]');
+          return [];
+        }
+        throw err;
+      }
     }
-    console.error('Error loading documents from blob:', error);
-    throw error; // Re-throw other errors
+  } catch (error) {
+    console.error('Error loading documents:', error);
+    return [];
   }
 };
 
 const saveDocuments = async (documents) => {
-  await put(BLOB_KEY, JSON.stringify(documents, null, 2), {
-    access: 'public',
-    contentType: 'application/json',
-  });
+  try {
+    const content = JSON.stringify(documents, null, 2);
+    if (useBlob) {
+      await put(BLOB_FILENAME, content, {
+        addRandomSuffix: false,
+        contentType: 'application/json',
+      });
+    } else {
+      await fs.writeFile(LOCAL_STORAGE_PATH, content, 'utf-8');
+    }
+  } catch (error) {
+    console.error('Error saving documents:', error);
+    throw error;
+  }
 };
 
 const addDocuments = async (newDocuments) => {
