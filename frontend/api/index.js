@@ -4,10 +4,7 @@ const cors = require('cors')
 const multer = require('multer')
 const fs = require('fs')
 
-const authRoutes = require('./routes/auth')
-const aiRoutes = require('./routes/ai')
-const studentRoutes = require('./routes/students')
-const creditRoutes = require('./routes/credits')
+
 
 // Configurazione di Multer per il salvataggio dei file
 const uploadDir = process.env.VERCEL_ENV ? '/tmp/uploads' : 'uploads/';
@@ -81,4 +78,5 @@ if (require.main === module) {
   })
 }
 
+// Trigger new build
 module.exports = app
