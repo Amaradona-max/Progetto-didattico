@@ -10,9 +10,10 @@ const studentRoutes = require('./routes/students')
 const creditRoutes = require('./routes/credits')
 
 // Configurazione di Multer per il salvataggio dei file
+const uploadDir = process.env.VERCEL_ENV ? '/tmp/uploads' : 'uploads/';
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = 'uploads/'
+    const dir = uploadDir;
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -51,7 +52,7 @@ app.post('/api/documents', upload.array('documents'), (req, res) => {
 
 // Rotta per ottenere l'elenco dei file
 app.get('/api/documents', (req, res) => {
-  const dir = 'uploads/';
+  const dir = uploadDir;
   if (!fs.existsSync(dir)) {
     return res.json({ documents: [] });
   }
