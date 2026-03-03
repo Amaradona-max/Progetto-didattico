@@ -2,13 +2,13 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/index.js",
+      "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
-          "backend/data/**",
-          "backend/routes/**",
-          "backend/services/**"
+          "api/data/**",
+          "api/routes/**",
+          "api/services/**"
         ]
       }
     },
@@ -21,11 +21,26 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/backend/index.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        }
+      ]
     }
   ]
 }
