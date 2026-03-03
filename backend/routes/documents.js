@@ -47,25 +47,25 @@ router.post(
       })
     )
 
-    addDocuments(documents)
+    await addDocuments(documents);
 
     res.json({
       success: true,
       documents,
-    })
+    });
   }
-)
+);
 
-router.get('/', (req, res) => {
-  const { subjectId } = req.query
-  const documents = listDocuments({ subjectId })
-  res.json({ documents })
-})
+router.get('/', async (req, res) => {
+  const { subjectId } = req.query;
+  const documents = await listDocuments({ subjectId });
+  res.json({ documents });
+});
 
-router.get('/context', (req, res) => {
-  const { subjectId, documentId } = req.query
-  const context = getContext({ subjectId, documentId })
-  res.json({ context })
-})
+router.get('/context', async (req, res) => {
+  const { subjectId, documentId } = req.query;
+  const context = await getContext({ subjectId, documentId });
+  res.json({ context });
+});
 
 module.exports = router

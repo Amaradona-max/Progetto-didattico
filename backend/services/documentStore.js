@@ -1,57 +1,59 @@
-const fs = require('fs')
-const path = require('path')
+const { put, get, del } = require('@vercel/blob');
 
-const dataDir = path.join(__dirname, '..', 'data')
-const dataFile = path.join(dataDir, 'documents.json')
+const BLOB_KEY = 'documents.json';
 
-const ensureStore = () => {
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true })
+const loadDocuments = async () => {
+  try {
+    const blob = await get(BLOB_KEY);
+    if (!blob) return [];
+    const raw = await blob.text();
+    return JSON.parse(raw || '[]');
+  } catch (error) {
+    if (error.status === 404) {
+      console.log('Blob not found, creating a new one.');
+      await saveDocuments([]);
+      return [];
+    }
+    console.error('Error loading documents from blob:', error);
+    throw error; // Re-throw other errors
   }
-  if (!fs.existsSync(dataFile)) {
-    fs.writeFileSync(dataFile, '[]', 'utf-8')
-  }
-}
+};
 
-const loadDocuments = () => {
-  ensureStore()
-  const raw = fs.readFileSync(dataFile, 'utf-8')
-  return JSON.parse(raw || '[]')
-}
+const saveDocuments = async (documents) => {
+  await put(BLOB_KEY, JSON.stringify(documents, null, 2), {
+    access: 'public',
+    contentType: 'application/json',
+  });
+};
 
-const saveDocuments = (documents) => {
-  ensureStore()
-  fs.writeFileSync(dataFile, JSON.stringify(documents, null, 2), 'utf-8')
-}
+const addDocuments = async (newDocuments) => {
+  const documents = await loadDocuments();
+  documents.push(...newDocuments);
+  await saveDocuments(documents);
+  return documents;
+};
 
-const addDocuments = (newDocuments) => {
-  const documents = loadDocuments()
-  documents.push(...newDocuments)
-  saveDocuments(documents)
-  return documents
-}
-
-const listDocuments = ({ subjectId } = {}) => {
-  const documents = loadDocuments()
+const listDocuments = async ({ subjectId } = {}) => {
+  const documents = await loadDocuments();
   const filtered = subjectId
     ? documents.filter((doc) => doc.subjectId === subjectId)
-    : documents
-  return filtered.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-}
+    : documents;
+  return filtered.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+};
 
-const getContext = ({ subjectId, documentId }) => {
-  const documents = loadDocuments()
+const getContext = async ({ subjectId, documentId }) => {
+  const documents = await loadDocuments();
   if (documentId) {
-    const doc = documents.find((item) => item.id === documentId)
-    return doc ? doc.chunks.join('\n') : ''
+    const doc = documents.find((item) => item.id === documentId);
+    return doc ? doc.chunks.join('\n') : '';
   }
   if (subjectId) {
     return documents
       .filter((item) => item.subjectId === subjectId)
       .flatMap((item) => item.chunks)
-      .join('\n')
+      .join('\n');
   }
-  return ''
-}
+  return '';
+};
 
 module.exports = { addDocuments, listDocuments, getContext }
