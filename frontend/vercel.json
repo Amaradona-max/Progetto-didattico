@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "api/data/**",
+      "runtime": "nodejs18.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
