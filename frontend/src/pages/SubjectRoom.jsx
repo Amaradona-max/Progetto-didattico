@@ -7,7 +7,7 @@ export default function SubjectRoom() {
   const subject = SUBJECTS.find((item) => item.id === subjectId)
   const [documents, setDocuments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+  const apiBase = import.meta.env.VITE_API_URL || ''
 
   useEffect(() => {
     const loadDocuments = async () => {
