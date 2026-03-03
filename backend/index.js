@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', api: true })
+})
 
 app.use('/api/auth', authRoutes)
 app.use('/api/documents', documentRoutes)
@@ -24,6 +27,10 @@ app.use('/api/students', studentRoutes)
 app.use('/api/credits', creditRoutes)
 
 const port = process.env.PORT || 4000
-app.listen(port, () => {
-  console.log(`EduMind backend listening on port ${port}`)
-})
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`EduMind backend listening on port ${port}`)
+  })
+}
+
+module.exports = app
