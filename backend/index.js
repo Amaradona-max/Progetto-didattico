@@ -9,7 +9,7 @@ const studentRoutes = require('./routes/students')
 const creditRoutes = require('./routes/credits')
 
 const app = express()
-app.use(cors())
+app.use(cors({ origin: 'https://progetto-didattico.vercel.app' }));
 app.use(express.json({ limit: '10mb' }))
 
 app.get('/health', (req, res) => {
