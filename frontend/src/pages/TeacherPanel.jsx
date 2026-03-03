@@ -51,15 +51,18 @@ export default function TeacherPanel() {
       formData.append('title', title)
       formData.append('description', description)
       files.forEach((item) => formData.append('documents', item))
-      const response = await fetch(`${apiBase}/api/documents/upload`, {
+
+      const response = await fetch(`${apiBase}/api/documents`, {
         method: 'POST',
         body: formData,
       })
+
       if (!response.ok) {
         const error = await response.json().catch(() => ({}))
-        throw new Error(error.error || 'Errore durante il caricamento.')
+        throw new Error(error.error || `Errore HTTP: ${response.status}`)
       }
       const result = await response.json()
+
       const newDocs = result.documents || []
       setStatus({
         type: 'success',
@@ -72,7 +75,7 @@ export default function TeacherPanel() {
     } catch (error) {
       setStatus({
         type: 'error',
-        message: error.message || 'Errore durante il caricamento.',
+        message: error.message || 'Errore durante il caricamento. Controlla la console per i dettagli.',
       })
     }
   }
