@@ -70,7 +70,7 @@ export default function StudySession() {
     }
     const activeDoc = documents.find(d => d.id === activeId);
     const contextText = activeDoc ? `${activeDoc.title}\n\n${activeDoc.fileName}` : 'Nessun documento attivo';
-    const result = await ask(question, { context: contextText });
+    const result = await ask(question, contextText)
     addCredits(result.credits_earned)
     setQualityScore(result.quality_score)
     setLastFeedback(result.feedback)
