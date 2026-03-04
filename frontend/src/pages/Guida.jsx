@@ -12,7 +12,7 @@ export default function Guida() {
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-10">
-      <article className="prose prose-invert lg:prose-xl mx-auto">
+      <article className="prose lg:prose-xl mx-auto">
         <ReactMarkdown>{markdown}</ReactMarkdown>
       </article>
     </div>

@@ -18,30 +18,32 @@ export default function StudySession() {
   const apiBase = import.meta.env.VITE_API_URL || ''
 
   useEffect(() => {
-    const loadDocuments = async () => {
+    const loadDocuments = () => {
       try {
-        const response = await fetch(`${apiBase}/api/documents`)
-        if (!response.ok) {
-          throw new Error('Errore nel caricamento dei documenti.')
-        }
-        const data = await response.json()
-        const allDocs = data.documents || []
+        const allDocs = JSON.parse(localStorage.getItem('uploadedDocs') || '[]');
         if (documentId) {
-          const match = allDocs.find((doc) => doc.id === documentId)
+          const match = allDocs.find((doc) => doc.id === documentId);
           if (match) {
-            setActiveSubjectId(match.subjectId)
-            setDocuments(allDocs.filter((doc) => doc.subjectId === match.subjectId))
-            return
+            setActiveSubjectId(match.subjectId);
+            setDocuments(allDocs.filter((doc) => doc.subjectId === match.subjectId));
+            return;
           }
         }
-        setActiveSubjectId(allDocs[0]?.subjectId || '')
-        setDocuments(allDocs)
-      } catch {
-        setDocuments([])
+        // Fallback se non c'è un documentId valido
+        const firstDoc = allDocs[0];
+        if (firstDoc) {
+          setActiveSubjectId(firstDoc.subjectId);
+          setDocuments(allDocs.filter(doc => doc.subjectId === firstDoc.subjectId));
+        } else {
+          setDocuments([]);
+        }
+      } catch (e) {
+        console.error("Failed to load documents from localStorage", e);
+        setDocuments([]);
       }
-    }
-    loadDocuments()
-  }, [apiBase, documentId])
+    };
+    loadDocuments();
+  }, [documentId]);
 
   useEffect(() => {
     if (!documents.length) {
@@ -66,17 +68,8 @@ export default function StudySession() {
         credits_earned: 0,
       }
     }
-    const contextQuery =
-      activeId === 'all'
-        ? activeSubjectId
-          ? `subjectId=${activeSubjectId}`
-          : ''
-        : `documentId=${activeId}`
-    const contextResponse = contextQuery
-      ? await fetch(`${apiBase}/api/documents/context?${contextQuery}`)
-      : null
-    const contextData = contextResponse ? await contextResponse.json().catch(() => ({})) : {}
-    const contextText = contextData.context || ''
+    const activeDoc = documents.find(d => d.id === activeId);
+    const contextText = activeDoc ? `${activeDoc.title}\n\n${activeDoc.fileName}` : 'Nessun documento attivo';
     const result = await ask(question, contextText)
     addCredits(result.credits_earned)
     setQualityScore(result.quality_score)
