@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "vite frontend",
-    "build": "vite build frontend",
+    "build": "cd frontend && vite build",
     "vercel-build": "npm install && npm run build"
   },
   "dependencies": {
