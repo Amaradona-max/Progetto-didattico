@@ -1,8 +1,6 @@
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export default async function handler(request, response) {
   if (request.method !== 'POST') {
@@ -16,31 +14,23 @@ export default async function handler(request, response) {
       return response.status(400).json({ error: 'Question and context are required.' });
     }
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: "Sei un assistente di studio. Rispondi alle domande basandoti esclusivamente sul contesto fornito. Sii conciso e preciso. Non usare informazioni esterne."
-        },
-        {
-          role: "user",
-          content: `Contesto: ${context}\n\nDomanda: ${question}`
-        }
-      ],
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
-    const answer = completion.choices[0].message.content;
+    const prompt = `Contesto: ${context}\n\nDomanda: ${question}`;
+
+    const result = await model.generateContent(prompt);
+    const aiResponse = await result.response;
+    const answer = aiResponse.text();
 
     return response.status(200).json({
       answer: answer,
-      feedback: 'Risposta generata da OpenAI.',
-      quality_score: 4, // Esempio, potremmo calcolarlo in futuro
+      feedback: 'Risposta generata da Gemini.',
+      quality_score: 4, // Esempio
       credits_earned: 15, // Esempio
     });
 
   } catch (error) {
-    console.error("Error calling OpenAI:", error);
+    console.error("Error calling Gemini:", error);
     return response.status(500).json({ error: error.message });
   }
 }
