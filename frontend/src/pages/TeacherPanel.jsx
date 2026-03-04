@@ -9,7 +9,7 @@ export default function TeacherPanel() {
   const [status, setStatus] = useState({ type: 'idle', message: '' })
   const [uploadedDocs, setUploadedDocs] = useState([])
   const fileInputRef = useRef(null)
-  const apiBase = import.meta.env.VITE_API_URL || ''
+  const apiBase = ''
 
   const loadDocuments = async () => {
     try {
