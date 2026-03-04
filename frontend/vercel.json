@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://progetto-didattico-backend.vercel.app/api/:path*"
-    }
-  ]
-}
