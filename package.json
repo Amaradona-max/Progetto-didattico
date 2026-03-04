@@ -1,11 +1,8 @@
 {
   "private": true,
-  "workspaces": [
-    "frontend"
-  ],
   "scripts": {
-    "dev": "npm run dev -w frontend",
-    "build": "npm run build -w frontend"
+    "dev": "vite frontend",
+    "build": "vite build frontend"
   },
   "dependencies": {
     "formidable": "^3.5.1",
