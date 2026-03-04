@@ -26,13 +26,5 @@ export default defineConfig({
     },
   },
   
-  // Proxy per sviluppo locale
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8788', // Wrangler dev server
-        changeOrigin: true,
-      },
-    },
-  },
+
 });
