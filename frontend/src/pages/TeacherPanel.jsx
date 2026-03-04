@@ -88,6 +88,18 @@ export default function TeacherPanel() {
     }
   }
 
+  const handleDelete = (docId) => {
+    try {
+      const allDocs = JSON.parse(localStorage.getItem('uploadedDocs') || '[]');
+      const updatedDocs = allDocs.filter(doc => doc.id !== docId);
+      localStorage.setItem('uploadedDocs', JSON.stringify(updatedDocs));
+      loadDocuments(); // Ricarica la lista per aggiornare la UI
+    } catch (e) {
+      console.error("Failed to delete document from localStorage", e);
+      setStatus({ type: 'error', message: 'Errore durante la cancellazione.' });
+    }
+  }
+
   return (
     <div className="space-y-12 animate-in fade-in duration-500">
       <header className="glass-card p-10 rounded-[2.5rem] relative overflow-hidden">
@@ -131,6 +143,7 @@ export default function TeacherPanel() {
                 placeholder="Es: Introduzione alla Termodinamica"
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
+                required
                 className="w-full rounded-2xl border border-orange-100 bg-orange-50/30 px-6 py-4 text-sm text-[#451a03] font-bold outline-none focus:border-orange-500/50 transition-all"
               />
             </div>
@@ -254,8 +267,13 @@ export default function TeacherPanel() {
                       <p className="text-sm font-bold text-[#451a03] truncate">{doc.title}</p>
                       <p className="text-[10px] font-bold text-amber-900/40 truncate uppercase tracking-widest">{doc.fileName}</p>
                     </div>
-                    <div className="h-8 w-8 rounded-lg bg-orange-50 flex items-center justify-center text-xs">
-                       📄
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleDelete(doc.id)} className="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                      </button>
+                      <div className="h-8 w-8 rounded-lg bg-orange-50 flex items-center justify-center text-xs">
+                        📄
+                      </div>
                     </div>
                   </div>
                 ))
