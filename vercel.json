@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "functions/**/*": {
+      "includeFiles": "../../node_modules/formidable/**/*"
+    }
+  }
+}
