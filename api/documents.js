@@ -22,7 +22,7 @@ export default async function handler(request, response) {
     });
 
     const subjectId = fields.subjectId[0];
-    const title = fields.title[0];
+    const title = fields.documentTitle[0];
     const uploadedFiles = files.documents;
 
     // Simuliamo una risposta di successo per ogni file caricato
