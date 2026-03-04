@@ -46,7 +46,7 @@ export default function TeacherPanel() {
     try {
       const formData = new FormData()
       formData.append('subjectId', subjectId)
-      formData.append('title', title)
+      formData.append('documentTitle', title)
       formData.append('description', description)
       files.forEach((item) => formData.append('documents', item))
 
