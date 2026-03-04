@@ -11,16 +11,14 @@ export default function TeacherPanel() {
   const fileInputRef = useRef(null)
   const apiBase = ''
 
-  const loadDocuments = async () => {
+  const loadDocuments = () => {
     try {
-      const response = await fetch(`${apiBase}/api/documents?subjectId=${subjectId}`)
-      if (!response.ok) {
-        throw new Error('Errore nel caricamento dei documenti.')
-      }
-      const data = await response.json()
-      setUploadedDocs(data.documents || [])
-    } catch {
-      setUploadedDocs([])
+      const allDocs = JSON.parse(localStorage.getItem('uploadedDocs') || '[]');
+      const subjectDocs = allDocs.filter(doc => doc.subjectId === subjectId);
+      setUploadedDocs(subjectDocs);
+    } catch (e) {
+      console.error("Failed to load documents from localStorage", e);
+      setUploadedDocs([]);
     }
   }
 
@@ -64,6 +62,16 @@ export default function TeacherPanel() {
       const result = await response.json()
 
       const newDocs = result.documents || []
+
+      // Salva i nuovi documenti nel localStorage
+      try {
+        const existingDocs = JSON.parse(localStorage.getItem('uploadedDocs') || '[]')
+        const updatedDocs = [...existingDocs, ...newDocs.map(doc => ({ ...doc, subjectId }))]
+        localStorage.setItem('uploadedDocs', JSON.stringify(updatedDocs))
+      } catch (e) {
+        console.error("Failed to save documents to localStorage", e)
+      }
+
       setStatus({
         type: 'success',
         message: `Documenti caricati: ${newDocs.length || files.length}`,

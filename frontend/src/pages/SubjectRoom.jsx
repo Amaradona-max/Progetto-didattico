@@ -10,25 +10,23 @@ export default function SubjectRoom() {
   const apiBase = ''
 
   useEffect(() => {
-    const loadDocuments = async () => {
-      setIsLoading(true)
+    const loadDocuments = () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(`${apiBase}/api/documents?subjectId=${subjectId}`)
-        if (!response.ok) {
-          throw new Error('Errore nel caricamento dei documenti.')
-        }
-        const data = await response.json()
-        setDocuments(data.documents || [])
-      } catch {
-        setDocuments([])
+        const allDocs = JSON.parse(localStorage.getItem('uploadedDocs') || '[]');
+        const subjectDocs = allDocs.filter(doc => doc.subjectId === subjectId);
+        setDocuments(subjectDocs);
+      } catch (e) {
+        console.error("Failed to load documents from localStorage", e);
+        setDocuments([]);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
     if (subjectId) {
-      loadDocuments()
+      loadDocuments();
     }
-  }, [apiBase, subjectId])
+  }, [subjectId]);
 
   return (
     <div className="space-y-12 animate-in fade-in duration-500">
