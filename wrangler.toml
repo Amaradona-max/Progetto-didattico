@@ -1,0 +1,11 @@
+# wrangler.toml — Configurazione Cloudflare Pages + Workers
+
+name = "edumind"
+compatibility_date = "2024-01-01"
+
+# Directory del build output frontend
+pages_build_output_dir = "frontend/dist"
+
+# Variabili d'ambiente (i valori reali vanno nel dashboard Cloudflare)
+[vars]
+NODE_ENV = "production"
