@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "vite frontend",
-    "build": "vite build frontend"
+    "build": "vite build frontend",
+    "vercel-build": "npm install && npm run build"
   },
   "dependencies": {
     "formidable": "^3.5.1",
